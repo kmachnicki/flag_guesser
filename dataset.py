@@ -17,7 +17,7 @@ class DataSet:
         csv_reader = reader(csv_file, delimiter=',')
         self._column_names = self._read_header(csv_reader)
         for sample in csv_reader:
-            self._X.append([float(i) for i in sample[1:]])
+            self._X.append([int(i) for i in sample[1:]])
             extracted_class = str(sample[0])
             self._y.append(extracted_class)
         self._check_features_sizes()
