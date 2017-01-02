@@ -3,6 +3,7 @@
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import train_test_split, cross_val_predict, cross_val_score
 from sklearn.feature_selection import SelectKBest
+import matplotlib.pyplot as plt
 import operator
 import numpy as np
 from dataset import DataSet
@@ -119,8 +120,9 @@ def main():
     clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=hidden_layer_size, random_state=1)
     clf.fit(ds.X, ds.y)
     print("Hidden layer size: {}".format(hidden_layer_size))
-    print(clf.classes_)
-    print(len(clf.classes_))
+
+    #print(clf.classes_)
+    #print(len(clf.classes_))
     new_set = DataSet()
     general_counter = Counter()
     for i in range(10):
@@ -130,9 +132,18 @@ def main():
             new_set.extract_from_csv(csv_file)
         general_counter.update(select_best_features(new_set))
     print("General counter:")
+    labels = []
+    values = []
     for label, value in sorted(general_counter.items(), key=operator.itemgetter(1), reverse=True):
+        labels.append(new_set.col_names[label])
+        values.append(value)
         print("{} : {}".format(new_set.col_names[label], value), end=", ")
     print('\n')
+    indexes = np.arange(len(values))
+    plt.bar(indexes, values, width=1.0)
+    plt.xlim(0.0, len(indexes))
+    plt.xticks(indexes, labels, rotation=45)
+    plt.show()
 
     '''
     test_set = DataSet()
