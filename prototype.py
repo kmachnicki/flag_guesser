@@ -50,8 +50,26 @@ def select_alpha(ds, hidden_layer_size):
         print("Number of correct answers: {}, effectiveness: {:.3f}%".format(correct, float(correct / len(ds.y))))
 
 
+def select_hidden_layer_size(ds, alpha):
+    # The most effective hidden layer size selector:
+    output = {}
+    for hidden_size in np.arange(1, 13, 1):
+        clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=hidden_size, random_state=1)
+        clf.fit(ds.X, ds.y)
+        print("Hidden layer size: {}".format(hidden_size))
+        correct = 0
+        for i in range(len(ds.X)):
+            predicted = clf.predict([ds.X[i]])
+            if predicted == ds.y[i]:
+                correct += 1
+        effectiveness = float(correct / len(ds.y))
+        print("Number of correct answers: {}, effectiveness: {:.3f}%".format(correct, effectiveness))
+        output[hidden_size] = effectiveness
+    return output
+
+
 def select_hidden_layer_sizes(ds, alpha):
-    # The most effective hidden layer sizes selector:
+    # The most effective hidden layers size selector:
     for hid1 in np.arange(1, 25, 1):
         for hid2 in np.arange(1, 25, 1):
             clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=(hid1, hid2), random_state=1)
@@ -62,7 +80,7 @@ def select_hidden_layer_sizes(ds, alpha):
                 predicted = clf.predict([ds.X[i]])
                 if predicted == ds.y[i]:
                     correct += 1
-    print("Number of correct answers: {}, effectiveness: {:.3f}%".format(correct, float(correct / len(ds.y))))
+            print("Number of correct answers: {}, effectiveness: {:.3f}%".format(correct, float(correct / len(ds.y))))
 
 
 def test_effectiveness(ds, clf):
@@ -119,10 +137,9 @@ def main():
     alpha = 0.88
     clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=hidden_layer_size, random_state=1)
     clf.fit(ds.X, ds.y)
-    print("Hidden layer size: {}".format(hidden_layer_size))
+    #print("Hidden layer size: {}".format(hidden_layer_size))
 
-    #print(clf.classes_)
-    #print(len(clf.classes_))
+    '''
     new_set = DataSet()
     general_counter = Counter()
     for i in range(10):
@@ -144,6 +161,15 @@ def main():
     plt.xlim(0.0, len(indexes))
     plt.xticks(indexes, labels, rotation=45)
     plt.show()
+    '''
+
+    hidden_sizes = select_hidden_layer_size(ds, 0.88)
+    keys, values = hidden_sizes.keys(), hidden_sizes.values()
+    indexes = np.arange(len(values))
+    plt.bar(indexes, values, width=1.0)
+    plt.xlim(0.0, len(indexes))
+    plt.xticks(indexes)
+    plt.show()
 
     '''
     test_set = DataSet()
@@ -154,7 +180,7 @@ def main():
     '''
     #select_best_features(ds)
     #select_alpha(ds, hidden_layer_size)
-    #select_hidden_layer_size(ds, alpha)
+    #select_hidden_layer_sizes(ds, alpha)
 
 
 if __name__ == '__main__':
