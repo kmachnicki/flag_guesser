@@ -17,11 +17,12 @@ COLORS = [
     ("red", 1),
     ("blue", 2),
     ("green", 3),
-    ("yellow (gold)", 4),
+    ("yellow", 4),
     ("white", 5),
+    ("gold", 6),
     ("black", 7),
-    ("orange (brown)", 8),
-    ("other", 9),
+    ("orange", 8),
+    ("brown", 9),
 ]
 
 # questions order based on a features selection
