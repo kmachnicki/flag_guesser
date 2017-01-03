@@ -131,14 +131,14 @@ Effectiveness: 95.0%
 
 Nauczony algorytm radził sobie bardzo dobrze z odgadywaniem państw, gdyż większość z nich odgadywana była z ponad 90\% prawdopodobieństwem (do testu w dalszym ciągu używano zbioru wejściowego), co zbadano za pomocą funkcji \texttt{predict\_proba} udostępnioną przez klasyfikator, która to ukazuje procentowy rozkład pewności klasyfikacji wszystkich klas. Dla sprawdzenia wybierane były 3 klasy z najwyższą pewnością.
 
-\begin{lstlisting}[caption=Przykładowy rozkład pewności klas dla dla poprawnego wskazania państwa Nepal]
+\begin{lstlisting}[caption=Przykładowy rozkład pewności klas dla poprawnego wskazania państwa Nepal]
 Country: Nepal
 1st probability: 94.0% of country: Nepal
 2nd probability: 2.0% of country: Italy
 3rd probability: 1.8% of country: Israel
 \end{lstlisting}
 
-Uprzednie testy wykazały 95.0\% efektywność przy odgadywaniu, dlaczego więc nie udało się osiągnąć 100\%? Jest to związane z tym, że część flag różnych krajów jest identyczna, bądź bardzo do siebie podobna i cechy jakimi były one określane okazały się identyczne. Sprawiło to, że algorytm oznaczał z takim samym prawdopodobieństwem wystąpienie i jednego i drugiego kraju, co spowodowało obniżenie ogólnej efektywności. Przykładami takich krajów są chociażby Luksemburg i Holandia czy Indonezja i Maroko.
+Uprzednie testy wykazały 95.0\% efektywność przy odgadywaniu, dlaczego więc nie udało się osiągnąć 100\%? Jest to związane z tym, że część krajów ma bardzo podobne do siebie flagi i cechy jakimi były one określane okazały się identyczne. Sprawiło to, że algorytm oznaczał z takim samym prawdopodobieństwem wystąpienie i jednego i drugiego kraju, co spowodowało obniżenie ogólnej efektywności. Przykładami takich krajów są chociażby Luksemburg i Holandia, Indonezja i Maroko czy Dania oraz Szwajcaria.
 
 \begin{lstlisting}[caption=Przykładowy rozkład pewności klas dla niepoprawnego wskazania Szwajcarii]
 Country: Switzerland
@@ -147,7 +147,7 @@ Country: Switzerland
 3rd probability: 5.4% of country: Norway
 \end{lstlisting}
 
-Po badaniach efektywności nauczonego algorytmu, sprawdzono również czasy uczenia dla różnej liczby neuronów w warstwie ukrytej. Stwierdzono, że czas uczenia rośnie ze złożonością zbliżoną do stałej, oraz potwierdziły słuszność wybrania 7 neuronów, gdyż stosunek jakości algorytmu do czasu jego nauczania był najbardziej optymalny. Nie było sensu zatem wybierania wyższej liczby, gdyż efektywność dla nich była taka sama jak dla 7, zaś czasy uczenia rosły.
+Po badaniach efektywności nauczonego algorytmu, sprawdzono również czasy uczenia dla różnej liczby neuronów w warstwie ukrytej. Stwierdzono, że czas uczenia rośnie ze złożonością zbliżoną do stałej, oraz potwierdziły słuszność wybrania 7 neuronów, gdyż stosunek jakości algorytmu do czasu jego nauczania był optymalny. Nie było sensu zatem wybierania wyższej liczby, gdyż efektywność dla nich była taka sama jak dla 7, zaś czasy uczenia rosły.
 
 \begin{table}[ht!]
 \centering
@@ -262,7 +262,7 @@ Po rozpoczęciu wyświetlać się będą po kolei pytania dotyczące każdej z c
 	\caption{Okno wyboru prawda/fałsz}
 \end{figure}
 
-Wyświetlanie 23 pytań podzielone jest na 4 sekcje, gdzie co 6 pytań wyświetlane jest zapytanie czy gracz nie ma na myśli państwa, które znajduje się w tym momencie na pierwszym miejscu według rozkładu pewności. Dzięki ułożeniu pytań względem rankingu cech istnieje możliwość odgadnięcia państwa bez przechodzenia przez wszystkie państwa. Cechy, które jeszcze nie pojawiły się w pytaniach ustawiane są na 0.
+Wyświetlanie 23 pytań podzielone jest na 4 sekcje, gdzie co 6 pytań wyświetlane jest zapytanie czy gracz nie ma na myśli państwa, które znajduje się w tym momencie na pierwszym miejscu według rozkładu pewności. Dzięki ułożeniu pytań względem rankingu cech istnieje możliwość odgadnięcia państwa bez przechodzenia przez wszystkie pytania. Cechy, które jeszcze nie pojawiły się w pytaniach ustawiane są na 0.
 
 \begin{figure}[h!]
 	\centering
