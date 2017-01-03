@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split, cross_val_predict, cross_v
 from sklearn.feature_selection import SelectKBest
 import matplotlib.pyplot as plt
 import operator
+import time
 import numpy as np
 from dataset import DataSet
 from collections import Counter
@@ -53,19 +54,23 @@ def select_alpha(ds, hidden_layer_size):
 def select_hidden_layer_size(ds, alpha):
     # The most effective hidden layer size selector:
     output = {}
+    times = {}
     for hidden_size in np.arange(1, 11, 1):
         clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=hidden_size, random_state=1)
+        start = time.time()
         clf.fit(ds.X, ds.y)
-        print("Hidden layer size: {}".format(hidden_size))
+        stop = time.time()
+        times[hidden_size] = stop - start
+        print("Hidden layer size: {}, fit time: {} s".format(hidden_size, stop - start))
         correct = 0
         for i in range(len(ds.X)):
             predicted = clf.predict([ds.X[i]])
             if predicted == ds.y[i]:
                 correct += 1
-        effectiveness = float(correct / len(ds.y))
+        effectiveness = float(correct / len(ds.y)) * 100
         print("Number of correct answers: {}, effectiveness: {:.3f}%".format(correct, effectiveness))
         output[hidden_size] = effectiveness
-    return output
+    return output, times
 
 
 def select_hidden_layer_sizes(ds, alpha):
@@ -94,7 +99,7 @@ def test_effectiveness(ds, clf):
         countries_probabilities = {}
         for k in range(len(clf.classes_)):
             countries_probabilities[clf.classes_[k]] = probabilities[0][k]
-        '''
+
         sorted_probabilities = sorted(countries_probabilities.items(), key=operator.itemgetter(1), reverse=True)
         print("------------------------------------------------")
         print("Country: {}".format(ds.y[i]))
@@ -104,7 +109,7 @@ def test_effectiveness(ds, clf):
         print("1st probability: {:.3f}% of country: {}".format(p1[1], p1[0]))
         print("2nd probability: {:.3f}% of country: {}".format(p2[1], p2[0]))
         print("3rd probability: {:.3f}% of country: {}".format(p3[1], p3[0]))
-        '''
+
         if predicted == ds.y[i]:
             correct += 1
         else:
@@ -127,18 +132,7 @@ def select_best_features(ds):
     return counter
 
 
-def main():
-    ds = DataSet()
-    with open("data_sets/flags_clean.csv",
-              "r", newline='', encoding="utf8") as csv_file:
-        ds.extract_from_csv(csv_file)
-
-    hidden_layer_size = 8
-    alpha = 0.88
-    clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=hidden_layer_size, random_state=1)
-    clf.fit(ds.X, ds.y)
-    #print("Hidden layer size: {}".format(hidden_layer_size))
-
+def plot_best_features():
     new_set = DataSet()
     general_counter = Counter()
     for i in range(20):
@@ -157,19 +151,46 @@ def main():
     print('\n')
     indexes = np.arange(len(values))
     plt.bar(indexes, values, width=1.0, align='center')
-    plt.subplots_adjust(bottom=0.15)
+    plt.subplots_adjust(bottom=0.20)
     plt.xlim(-0.5, len(labels) - 0.5)
     plt.xticks(indexes, labels, rotation='vertical')
+    plt.xlabel("Features")
+    plt.ylabel("Features selection")
     plt.show()
 
-    '''
-    hidden_sizes = select_hidden_layer_size(ds, alpha)
+
+def plot_hidden_layer_sizes(ds, alpha):
+    hidden_sizes, hidden_times = select_hidden_layer_size(ds, alpha)
     keys, values = hidden_sizes.keys(), hidden_sizes.values()
     plt.bar(list(keys), values, width=1.0, align='center')
     plt.xlim(0.5, len(list(keys)) + 0.5)
     plt.xticks(list(keys))
+    plt.xlabel("Size of neurons in hidden layer")
+    plt.ylabel("Score (%)")
     plt.show()
-    '''
+
+    layers, times = hidden_times.keys(), hidden_times.values()
+    plt.plot(list(layers), list(times), "bo--")
+    plt.xticks(list(layers))
+    plt.xlabel("Size of neurons in hidden layer")
+    plt.ylabel("Time (s)")
+    plt.show()
+
+
+def main():
+    ds = DataSet()
+    with open("data_sets/flags_clean.csv",
+              "r", newline='', encoding="utf8") as csv_file:
+        ds.extract_from_csv(csv_file)
+
+    hidden_layer_size = 8
+    alpha = 0.88
+    clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=hidden_layer_size, random_state=1)
+    clf.fit(ds.X, ds.y)
+    #print("Hidden layer size: {}".format(hidden_layer_size))
+
+    plot_best_features()
+    plot_hidden_layer_sizes(ds, alpha)
     '''
     test_set = DataSet()
     with open("data_sets/test_set.csv",
@@ -180,6 +201,7 @@ def main():
     #select_best_features(ds)
     #select_alpha(ds, hidden_layer_size)
     #select_hidden_layer_sizes(ds, alpha)
+    #select_hidden_layer_size(ds, alpha)
 
 
 if __name__ == '__main__':
