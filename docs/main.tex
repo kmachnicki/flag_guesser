@@ -1,0 +1,150 @@
+%----------------------------------------------------------------------------------------
+%	PREAMBUŁA: PAKIETY I KONFIGURACJA DOKUMENTU
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt,a4paper]{report}   % klasa dokumentu i rozmiar czcionki
+\usepackage[margin=1in, paperwidth=8.5in, paperheight=11in]{geometry}   % określa wielkość marginesów
+\usepackage[utf8]{inputenc}             % kodowanie dokumentu
+\usepackage[T1]{fontenc}                % kodowanie czcionki
+\usepackage{polski}                     % polski pakiet językowy
+\usepackage{lmodern}                    % czcionka Latex Modern zamiast Computer Modern
+\usepackage{parskip}                    % usuwa efekty parskip w ToC
+\usepackage{indentfirst}                % automatyczne wcięcia pierwszego akapitu
+\usepackage{fancyhdr}					% nagłówek i stopka
+\usepackage{lastpage}					% potrzebny fancyhdr do numerowania
+\usepackage{extramarks}					% potrzebny fancyhdr
+\usepackage{booktabs}					% do tabel
+\usepackage{multirow}					% do łączenia wierszy w tabeli
+\usepackage{multicol}					% do łączenia kolumn w tabeli
+\usepackage{graphicx}					% załączanie obrazów
+\usepackage{caption}					% zarządzanie podpisami pod floatami
+\usepackage{color}						% zmiana koloru czcionki i tła
+\usepackage{placeins}		            % zarządzanie floatami
+\usepackage{pdflscape}                  % poziome obracanie stron
+\usepackage{enumerate}					% typy wyliczeniowe
+\usepackage{listings}					% dodawanie plików źródłowych
+\usepackage{amsmath}					% wzory matematyczne
+\usepackage{amssymb}                    % rozszerzenie amsmath
+\usepackage{relsize}					% zmiana wielkości wzorów matematycznych
+\usepackage{gensymb}                    % znaki specjalne
+\usepackage[hidelinks,pagebackref=true,backref=false]{hyperref}
+\usepackage{url}                        % generowanie linków ze znakami specjalnymi
+\usepackage{tikz}                       % modelowanie wykresów
+\usepackage{longtable}                  % rozkładanie tabel na kilka stron
+\usepackage{cite}                       % cytowanie
+\usepackage{enumitem}                   % dodatkowe opcje dla enumerate, itemize
+
+%----------------------------------------------------------------------------------------
+%	PREAMBUŁA: DEFINICJE KOMEND
+%----------------------------------------------------------------------------------------
+
+\title{Sieć neuronowa odgadująca flagi państwowe.}
+\author{Łukasz Matysiak \\ Kamil Machnicki}
+\newcommand{\Class}{Podstawy obliczeń neuronowych}
+\newcommand{\Type}{Sprawozdanie}
+\newcommand{\ClassDay}{Wtorek TP}
+\newcommand{\ClassTime}{13:15}
+\newcommand{\ClassInstructor}{Dr inż. Edward Puchała}
+\newcommand{\University}{Politechnika Wrocławska}
+\newcommand{\Department}{Wydział Elektroniki}
+\newcommand{\Faculty}{Informatyka}
+
+%----------------------------------------------------------------------------------------
+%	PREAMBUŁA: INNE USTAWIENIA
+%----------------------------------------------------------------------------------------
+
+\setlength{\parindent}{12pt} % szerokość wcięć w paragrafach
+\setlength{\parskip}{1,0em} % odstępy między paragrafami
+%\renewcommand{\baselinestretch}{1.20} % wielkość odstępu między wierszami
+\renewcommand\headrulewidth{0pt} % wielkość linii nagłówka
+\renewcommand\footrulewidth{0pt} % wielkość linii stopki
+
+\usetikzlibrary{calc} % modelowanie wykresów
+
+\graphicspath{{img/}}
+
+\lstset{
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  keepspaces=true,
+}
+
+%----------------------------------------------------------------------------------------
+%	PREAMBUŁA: USTAWIENIA NAGŁÓWKA I STOPKI
+%----------------------------------------------------------------------------------------
+
+% zastosowanie fancyhdr do stron typu plain
+\fancypagestyle{plain}{}
+% styl strony stosujący fancyhdr
+\pagestyle{fancy}
+    % górny-lewy
+\lhead{} %{Zarządzanie flotą komputerów i urządzeń mobilnych}
+    % górny-środkowy
+\chead{} %{\Class\ (\ClassInstructor\ \ClassDay \ClassTime)}
+    % górny-prawy
+\rhead{} %{\Class\ }
+    % dolny-lewy
+\lfoot{} %{\firstxmark}
+    % dolny-środkowy
+\cfoot{Strona\ \thepage\ z\ \protect\pageref{LastPage}}
+    % dolny-prawy
+\rfoot{} %{\lastxmark}
+
+%----------------------------------------------------------------------------------------
+%	STRONA TYTUŁOWA
+%----------------------------------------------------------------------------------------
+
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{titlepage}
+    \begin{center}
+        
+        \huge\textsc{{\University}}\\
+        \Large\textsc{{\Department}}\\
+        \Large\textsc{{\Faculty}}\par
+        
+        \vspace*{2cm}
+        \LARGE\textsc{\Class}\par
+        
+        \vspace{20mm}
+        \Huge\textbf{\@title}\par
+        
+        \vspace{3cm}
+		\large\textit{Autorzy:}\\ 
+        \Large\textbf{\@author}\par 
+        
+        \vspace {10mm}
+        \large\textit{Prowadzący:}\\
+        \large\textbf{\ClassInstructor}\par
+        \large\textit{Termin zajęć:}\\
+        \large\textbf{\ClassDay, godz. \ClassTime}\par
+
+        \vspace{2cm}
+		\small Wrocław \\
+        \small \@date \\
+		
+    \end{center}
+\end{titlepage}
+}
+\makeatother
+
+%----------------------------------------------------------------------------------------
+%	DOKUMENT
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\bibliographystyle{plabbrv}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\input{wstep.tex}
+\input{projekt.tex}
+\input{podsumowanie.tex}
+
+\nocite{*}
+\bibliography{bibliografia}
+
+\end{document}
