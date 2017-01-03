@@ -53,7 +53,7 @@ def select_alpha(ds, hidden_layer_size):
 def select_hidden_layer_size(ds, alpha):
     # The most effective hidden layer size selector:
     output = {}
-    for hidden_size in np.arange(1, 13, 1):
+    for hidden_size in np.arange(1, 11, 1):
         clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=hidden_size, random_state=1)
         clf.fit(ds.X, ds.y)
         print("Hidden layer size: {}".format(hidden_size))
@@ -74,7 +74,7 @@ def select_hidden_layer_sizes(ds, alpha):
         for hid2 in np.arange(1, 25, 1):
             clf = MLPClassifier(algorithm='l-bfgs', max_iter=500, alpha=alpha, hidden_layer_sizes=(hid1, hid2), random_state=1)
             clf.fit(ds.X, ds.y)
-            print("1st size: {}, 2nd size".format(hid1, hid2))
+            print("1st size: {}, 2nd size: {}".format(hid1, hid2))
             correct = 0
             for i in range(len(ds.X)):
                 predicted = clf.predict([ds.X[i]])
@@ -139,10 +139,9 @@ def main():
     clf.fit(ds.X, ds.y)
     #print("Hidden layer size: {}".format(hidden_layer_size))
 
-    '''
     new_set = DataSet()
     general_counter = Counter()
-    for i in range(10):
+    for i in range(20):
         generate_test_set()
         with open("data_sets/test_set.csv",
               "r", newline='', encoding="utf8") as csv_file:
@@ -157,20 +156,20 @@ def main():
         print("{} : {}".format(new_set.col_names[label], value), end=", ")
     print('\n')
     indexes = np.arange(len(values))
-    plt.bar(indexes, values, width=1.0)
-    plt.xlim(0.0, len(indexes))
-    plt.xticks(indexes, labels, rotation=45)
+    plt.bar(indexes, values, width=1.0, align='center')
+    plt.subplots_adjust(bottom=0.15)
+    plt.xlim(-0.5, len(labels) - 0.5)
+    plt.xticks(indexes, labels, rotation='vertical')
+    plt.show()
+
+    '''
+    hidden_sizes = select_hidden_layer_size(ds, alpha)
+    keys, values = hidden_sizes.keys(), hidden_sizes.values()
+    plt.bar(list(keys), values, width=1.0, align='center')
+    plt.xlim(0.5, len(list(keys)) + 0.5)
+    plt.xticks(list(keys))
     plt.show()
     '''
-
-    hidden_sizes = select_hidden_layer_size(ds, 0.88)
-    keys, values = hidden_sizes.keys(), hidden_sizes.values()
-    indexes = np.arange(len(values))
-    plt.bar(indexes, values, width=1.0)
-    plt.xlim(0.0, len(indexes))
-    plt.xticks(indexes)
-    plt.show()
-
     '''
     test_set = DataSet()
     with open("data_sets/test_set.csv",
