@@ -1,3 +1,0 @@
-Wnioski:
-Sieci neuronowe sa bez sensu do takich zastosowan, bo mamy N klas i N probek - nie ma tutaj zadnego wnioskowania z poprzednich danych, a jedynie zwykle uczenie sie na pamiec, ktore rownie dobrze mozna zrobic na ifach/tablicy
-Warto wywalic z danych rzeczy, ktore nie maja najmniejszego wplywu na flage -> obszar panstwa, religia, polozenia etc
